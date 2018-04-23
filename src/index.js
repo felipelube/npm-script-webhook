@@ -14,11 +14,23 @@ const workDir = process.env.NSW_WORK_DIR || '/var/www/html';
 const scriptName = process.env.NSW_SCRIPT_NAME || 'build';
 const timeout = process.env.NSW_TIMEOUT || 30 * 1000;
 
-module.exports = async (req, res) => {
+const handleErrors = fn => async (req, res) => {
+  try {
+    return await fn(req, res);
+  } catch (err) {
+    if (process.env.NODE_ENV && process.NODE_ENV !== 'production') {
+      console.error(err.stack);
+    }
+    console.error(err.message);
+    return send(res, 500, 'Internal Server Error');
+  }
+};
+
+module.exports = handleErrors(async (req, res) => {
   await validateReq(req);
   await exec(`npm run ${scriptName}`, {
     cwd: workDir,
     timeout,
   });
   send(res, 204);
-};
+});
