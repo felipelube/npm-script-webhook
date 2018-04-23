@@ -23,7 +23,7 @@ const handleErrors = fn => async (req, res) => {
     }
     console.error(err.message);
     if (err.statusCode) {
-      return send(err.statusCode, 500, err.message);
+      return send(res, err.statusCode, err.message);
     }
     return send(res, 500, 'Internal Server Error');
   }
