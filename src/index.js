@@ -18,7 +18,7 @@ const handleErrors = fn => async (req, res) => {
   try {
     return await fn(req, res);
   } catch (err) {
-    if (process.env.NODE_ENV && process.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV && process.NODE_ENV === 'development') {
       console.error(err.stack);
     }
     console.error(err.message);
