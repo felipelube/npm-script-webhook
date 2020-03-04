@@ -1,18 +1,25 @@
 const { send } = require('micro');
 const { promisify } = require('util');
+const { existsSync } = require("fs")
 
 const validateReq = require('./lib/validateReq');
 const exec = promisify(require('child_process').exec);
 
-// CRITICAL: exit early if no token is defined.
-if (!process.env.NSW_TOKEN) {
-  console.error('NO TOKEN DEFINED, EXITING.');
-  process.exit(1);
-}
-
 const workDir = process.env.NSW_WORK_DIR || '/var/www/html';
 const scriptName = process.env.NSW_SCRIPT_NAME || 'build';
 const timeout = process.env.NSW_TIMEOUT || 30 * 1000;
+
+// CRITICAL: exit early if no token is defined.
+if (!process.env.NSW_TOKEN) {
+  console.error('NO TOKEN DEFINED, EXITING.');
+  process.exit(9);
+}
+
+// CRITICAL: exit early if the workDir does not exists
+if (!existsSync(workDir)) {
+  console.error('WORKDIR DOES NOT EXISTS, EXITING.');
+  process.exit(1);
+}
 
 const handleErrors = fn => async (req, res) => {
   try {
