@@ -3,7 +3,7 @@ const { promisify } = require('util');
 const { existsSync } = require("fs")
 
 const validateReq = require('./lib/validateReq');
-const exec = promisify(require('child_process').exec);
+const { exec } = require('child_process');
 
 const workDir = process.env.NSW_WORK_DIR || '/var/www/html';
 const scriptName = process.env.NSW_SCRIPT_NAME || 'build';
@@ -38,9 +38,13 @@ const handleErrors = fn => async (req, res) => {
 
 module.exports = handleErrors(async (req, res) => {
   await validateReq(req);
-  await exec(`npm run ${scriptName}`, {
-    cwd: workDir,
-    timeout,
+  exec(`npm run ${scriptName}`, {cwd: workDir, timeout}, (error, stdout, stderr) => {
+    if (error) {
+      console.error(error);
+      send(res, 500)
+      return
+    }
+    console.log(stdout);
+    send(res, 204);
   });
-  send(res, 204);
 });
