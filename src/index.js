@@ -1,12 +1,12 @@
 const { send } = require('micro');
-const { existsSync } = require("fs")
+const { existsSync } = require('fs');
 
 const validateReq = require('./lib/validateReq');
 const { exec } = require('child_process');
 
 const workDir = process.env.NSW_WORK_DIR || '/var/www/html';
 const scriptName = process.env.NSW_SCRIPT_NAME || 'build';
-const timeout = parseInt(process.env.NSW_TIMEOUT) * 1000 || 30 * 1000;
+const timeout = parseInt(process.env.NSW_TIMEOUT, 10) * 1000 || 30 * 1000;
 
 // CRITICAL: exit early if no token is defined.
 if (!process.env.NSW_TOKEN) {
@@ -37,11 +37,11 @@ const handleErrors = fn => async (req, res) => {
 
 module.exports = handleErrors(async (req, res) => {
   await validateReq(req);
-  exec(`npm run ${scriptName}`, {cwd: workDir, timeout}, (error, stdout, stderr) => {
+  exec(`npm run ${scriptName}`, { cwd: workDir, timeout }, (error, stdout) => {
     if (error) {
       console.error(error);
-      send(res, 500)
-      return
+      send(res, 500);
+      return;
     }
     console.log(stdout);
     send(res, 204);
