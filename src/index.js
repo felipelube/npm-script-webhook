@@ -7,7 +7,7 @@ const exec = promisify(require('child_process').exec);
 
 const workDir = process.env.NSW_WORK_DIR || '/var/www/html';
 const scriptName = process.env.NSW_SCRIPT_NAME || 'build';
-const timeout = process.env.NSW_TIMEOUT || 30 * 1000;
+const timeout = parseInt(process.env.NSW_TIMEOUT) * 1000 || 30 * 1000;
 
 // CRITICAL: exit early if no token is defined.
 if (!process.env.NSW_TOKEN) {
