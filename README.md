@@ -11,7 +11,7 @@ The request need to be sent via POST in the following format:
 The possible responses are:
 - HTTP 204: task execution was successful, the output is logged to `stdout`.
 - HTTP 403: invalid request or failed token authentication.
-- HTTP 405: only http POST method is allowed.
+- HTTP 405: only http `POST` method is allowed.
 - HTTP 500: task execution incurred in errors, traceback is logged to `stderr`.
 
 ## Configuration
