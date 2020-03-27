@@ -1,5 +1,4 @@
 const { send } = require('micro');
-const { promisify } = require('util');
 const { existsSync } = require("fs")
 
 const validateReq = require('./lib/validateReq');
