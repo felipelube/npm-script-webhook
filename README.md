@@ -20,3 +20,8 @@ The possible responses are:
 - HTTP 403: invalid request or failed token authentication.
 - HTTP 405: only http `POST` method is allowed.
 - HTTP 500: task execution incurred in errors, traceback is logged to `stderr`.
+
+## Docker images
+- felubra/npm-script-webhook:latest: based on mhart/alpine-node:12
+- felubra/npm-script-webhook:slim: based on node:12-slim
+- felubra/npm-script-webhook:standard: based on node:12
