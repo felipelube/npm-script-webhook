@@ -1,7 +1,7 @@
 # NPM Script Webhook
 Tiny web app for executing a npm task after a successful token authentication request.
 
-The request need to be sent via POST in the following format:
+The request body need to be sent via POST in the following format:
 ```json
 {
   "secret": "51999777-c86a-41c0-b69f-2e3f9ccc0f3b"
